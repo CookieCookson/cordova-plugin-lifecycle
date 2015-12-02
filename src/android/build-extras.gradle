@@ -1,0 +1,33 @@
+// This does not work alongside Crosswalk's multiple Apk mode currently as it specifies flavors for architecture
+cdvBuildMultipleApks=false
+
+// Specify product flavors
+android {
+    productFlavors {
+        alpha {}
+        beta {}
+        store {}
+    }
+}
+
+android.variantFilter { variant ->
+	// Current flavor being processed
+	def flavor = variant.flavors.get(0).name
+	
+	// Get the active flavor specified in the CLI command or fallback to alpha
+	def activeFlavor = project.hasProperty('activeFlavor') ? project.getProperty('activeFlavor') : 'alpha';
+	
+	// If this is the flavor we want
+	if (flavor == activeFlavor) {
+		// If not a store release
+		if (activeFlavor != 'store') {
+			// Add the flavor suffix to the application ID on all build types (debug/release)
+			android.buildTypes.all { theBuildType -> 
+				theBuildType.applicationIdSuffix = '.' + activeFlavor
+			}
+		}
+	} else {
+		// Do not build flavors not specified by the CLI command
+		variant.setIgnore(true)
+	}
+}

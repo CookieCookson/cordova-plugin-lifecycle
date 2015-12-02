@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-lifecycle" version="0.0.1">
+
+    <name>Lifecycle</name>
+    
+    <description>
+        This plugin allows you to create an app lifecycle with alpha, beta and production states.
+    </description>
+    
+    <author>Christian Cook</author>
+    
+    <license>MIT</license>
+    
+    <keywords>cordova,lifecycle,alpha,beta,development,production</keywords>
+    
+    <repo>https://github.com/CookieCookson/cordova-plugin-lifecycle</repo>
+    
+    <issue>https://github.com/CookieCookson/cordova-plugin-lifecycle/issues</issue>
+    
+    <engines>
+        <engine name="cordova" version=">=3.0.0"/>
+    </engines>
+    
+    <hook src="hooks/afterPluginAddHook.js" type="after_plugin_add"/>
+    
+    <platform name="android">
+        <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
+    </platform>
+    
+</plugin>

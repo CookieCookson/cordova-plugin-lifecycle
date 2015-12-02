@@ -1,0 +1,50 @@
+{
+  "name": "cordova-lifecycle-plugin",
+  "version": "0.0.1",
+  "description": "This plugin allows you to create an app lifecycle with alpha, beta and production states.",
+  "cordova": {
+    "id": "cordova-lifecycle-plugin",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CookieCookson/cordova-plugin-lifecycle.git"
+  },
+  "keywords": [
+    "cordova",
+    "lifecycle",
+    "alpha",
+    "beta",
+    "development",
+    "production",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "ios",
+    "android"
+  ],
+  "engines": [
+    {
+      "name": "cordova-ios",
+      "version": ">=3.8"
+    },
+    {
+      "name": "cordova-android",
+      "version": ">=4"
+    }
+  ],
+  "dependencies": {
+    "mkpath": ">=0.1",
+    "xml2js": ">=0.4",
+    "rimraf": ">=2.4"
+  },
+  "author": "Christian Cook",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CookieCookson/cordova-plugin-lifecycle/issues"
+  },
+  "homepage": "https://github.com/CookieCookson/cordova-plugin-lifecycle#readme"
+}
