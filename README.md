@@ -42,6 +42,11 @@ cordova run android -- --gradleArg="-PactiveFlavor=store" --release
 ```
 It is recommended you use the alpha state for debug installations over USB where you may need to remotely inspect or debug your app. The beta state is intended for when distributing your app over-the-air through services such as HockeyApp. Because of this it is recommended to pass through the release flag so the app is signed and runs with the release configuration.
 
+NOTE: When switching between alpha, beta and store builds on Android, you must first run the `clean` command else you may get odd results. You can do this by performing:
+```bash
+./platforms/android/cordova/clean
+```
+
 ## Future Development
 
 * iOS support
