@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-lifecycle" version="0.0.1">
+        id="cordova-plugin-lifecycle" version="0.0.2">
 
     <name>Lifecycle</name>
     
@@ -24,6 +24,7 @@
     </engines>
     
     <hook src="hooks/afterPluginAddHook.js" type="after_plugin_add"/>
+    <hook src="hooks/afterPrepareHook.js" type="after_prepare"/>
     
     <platform name="android">
         <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />

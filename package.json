@@ -1,11 +1,10 @@
 {
   "name": "cordova-lifecycle-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This plugin allows you to create an app lifecycle with alpha, beta and production states.",
   "cordova": {
     "id": "cordova-lifecycle-plugin",
     "platforms": [
-      "ios",
       "android"
     ]
   },
@@ -18,12 +17,11 @@
     "lifecycle",
     "alpha",
     "beta",
+    "variant",
     "development",
     "production",
     "ecosystem:cordova",
-    "cordova-ios",
     "cordova-android",
-    "ios",
     "android"
   ],
   "engines": [
@@ -37,9 +35,7 @@
     }
   ],
   "dependencies": {
-    "mkpath": ">=0.1",
-    "xml2js": ">=0.4",
-    "rimraf": ">=2.4"
+    "fs-extra": "0.26.2"
   },
   "author": "Christian Cook",
   "license": "MIT",
