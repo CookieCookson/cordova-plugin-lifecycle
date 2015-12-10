@@ -36,7 +36,10 @@
   ],
   "dependencies": {
     "fs-extra": "0.26.2",
-    "gm": "^1.21.1"
+    "gm": "^1.21.1",
+    "path": "^0.12.7",
+    "plist": "^1.2.0",
+    "xml2js": "^0.4.15"
   },
   "author": "Christian Cook",
   "license": "MIT",
