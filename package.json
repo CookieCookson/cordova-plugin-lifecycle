@@ -35,7 +35,8 @@
     }
   ],
   "dependencies": {
-    "fs-extra": "0.26.2"
+    "fs-extra": "0.26.2",
+    "gm": "^1.21.1"
   },
   "author": "Christian Cook",
   "license": "MIT",

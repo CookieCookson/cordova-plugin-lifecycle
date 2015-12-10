@@ -1,47 +1,56 @@
 var configParser = require('./lib/configXmlParser.js');
-var fs = require('fs-extra')
+var fs = require('fs-extra');
+var gm = require('gm');
 
 module.exports = function(ctx) {
     run(ctx);
 };
 
 function run(cordovaContext) {
-    var platformIcons = configParser.getIcons(cordovaContext);
+    // Retrieve overlay image from config.xml or provide fallback image with plugin
+    var alphaOverlay = configParser.getIconOverlay(cordovaContext, 'alpha');
+    var betaOverlay = configParser.getIconOverlay(cordovaContext, 'beta');
     
+    // Retrieve platform icons declared in config.xml
+    var platformIcons = configParser.getIcons(cordovaContext);
     if (platformIcons == null) {
         return;
     }
     
-    if (platformIcons.android !== undefined) {
-        processAndroidIcons(platformIcons.android);
-    }
+    // Loop through each platform and generate alpha/beta icons
+    var installedPlatforms = cordovaContext.opts.platforms;
+    installedPlatforms.forEach(function(installedPlatform) {
+        // If the android platform is installed and there are icons declared in config.xml
+       if (installedPlatform === 'android' && platformIcons.android) {
+            generateAndroidIcons(platformIcons.android, 'alpha', alphaOverlay);
+            generateAndroidIcons(platformIcons.android, 'beta', betaOverlay);
+       }
+    });
 }
-    
-function processAndroidIcons(androidIcons) {
-    if (androidIcons.alpha !== undefined) {
-        copyAndroidIcons(androidIcons.alpha, 'alpha');
-    }
-    
-    if (androidIcons.beta !== undefined) {
-        copyAndroidIcons(androidIcons.beta, 'beta');
-    }
-}
-    
-function copyAndroidIcons(androidIcons, state) {
+
+function generateAndroidIcons(androidIcons, variant, iconOverlay) {
+    // Loop through each android icon declaration
     androidIcons.forEach(function(icon) {
         var iconSource = icon.src;
-        var iconDestination = 'platforms/android/src/' + state + '/res/drawable-' + icon.density + '/icon.png';
-        fs.copy(
-            iconSource, 
-            iconDestination, 
-            {
-                mkdirp: true
-            },
-            function(error) {
-                if (error) {
-                console.log( error);
-                }
+        var iconDestination = 'platforms/android/src/' + variant + '/res/drawable-' + icon.density + '/icon.png';
+        
+        // Get size of source icon
+        gm(iconSource)
+        .size(function(size_error, size) {
+            if (!size_error) {
+                var iconWidth = size.width;
+                var iconHeight = size.height;
+                // add icon overlay to source icon and write it to the variant destination
+                gm(iconSource)
+                .draw(['image over 0,0 ' + iconWidth + ','+iconHeight + ' "' + iconOverlay + '"'])
+                .write(iconDestination, function(error){
+                    if (error) {
+                        console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error); 
+                    } else { 
+                        console.log('Generated ' + variant + ' icon: ' + iconDestination);
+                    }
+                });
             }
-        );
+        });
     });
 }
