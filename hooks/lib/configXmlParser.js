@@ -3,7 +3,8 @@
     var ConfigXmlHelper = require('./configXmlHelper.js');
 
     module.exports = {
-        getIcons: getIcons
+        getIcons: getIcons,
+        getApplicationId: getApplicationId
     };
 
     function getIcons(cordovaContext) {
@@ -44,6 +45,15 @@
             });      
         });
         return icons;
+    }
+    
+    function getApplicationId(cordovaContext) {
+        var configXml = new ConfigXmlHelper(cordovaContext).read();
+        if (configXml == null) {
+            console.warn('config.xml not found! Please, check that it exist\'s in your project\'s root directory.');
+            return null;
+        }
+        return configXml['widget']['$']['id'];
     }
 
 })();
