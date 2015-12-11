@@ -8,7 +8,7 @@
     };
     
     function getIconOverlay(cordovaContext, variant) {
-        var defaultIcon = 'src/' + variant + '-overlay.png';
+        var defaultIcon = cordovaContext.opts.plugin.dir + '/src/' + variant + '-overlay.png';
         
         var configXml = new ConfigXmlHelper(cordovaContext).read();
         if (configXml === null) {
@@ -16,9 +16,9 @@
             return null;
         }
         
-        var iconOverlay = configXml.widget['icon' + variant + '-overlay'];
+        var iconOverlay = configXml.widget['icon-' + variant + '-overlay'];
         if (iconOverlay !== undefined) {
-            return iconOverlay['$'].src || defaultIcon;
+            return iconOverlay[0]['$'].src || defaultIcon;
         } else {
             return defaultIcon;
         }
