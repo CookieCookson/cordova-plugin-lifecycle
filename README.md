@@ -20,9 +20,8 @@ This plugin automatically generates variant-specific icons so you can differenti
 ## Installation
 
 ### Dependencies
-To generate the variant-specific icons the plugin requires GraphicsMagick or ImageMagick. You can install this by performing:
+To generate the variant-specific icons the plugin requires GraphicsMagick. You can install this by performing:
 ```bash
-brew install imagemagick
 brew install graphicsmagick
 ```
 ### Plugin
