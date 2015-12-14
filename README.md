@@ -15,10 +15,17 @@ Build types:
 * Beta
 * Store
 
-It is possible to provide different icon sets for each build type so you can easily identify the variants on your device.
+This plugin automatically generates variant-specific icons so you can differentiate between the app variants on your device.
 
 ## Installation
-For a stable release you can run:
+
+### Dependencies
+To generate the variant-specific icons the plugin requires GraphicsMagick. You can install this by performing:
+```bash
+brew install graphicsmagick
+```
+### Plugin
+To install the stable release of the plugin you can run:
 ```bash
 cordova plugin add cordova-plugin-lifecycle
 ```
@@ -30,30 +37,12 @@ cordova plugin add https://github.com/CookieCookson/cordova-plugin-lifecycle
 ## Usage
 
 ### Setting up
-If you wish to provide different icon sets for the variants, you must edit config.xml. Following the standards of the cordova `<icon>` tag, you can specify `<alpha-icon>` and `<beta-icon>` under your platform specific configuration.
+If you wish to provide a custom overlay for the variants, you must use the `<icon-alpha-overlay>` and `<icon-beta-overlay>` tags in config.xml. 
 ```xml
-<platform name="android">
-
-	<!-- Store Icons, standard cordova method -->
-	<icon src="res/android/store/ldpi.png" density="ldpi" />
-	<icon src="res/android/store/mdpi.png" density="mdpi" />
-	<icon src="res/android/store/hdpi.png" density="hdpi" />
-	<icon src="res/android/store/xhdpi.png" density="xhdpi" />
-	
-	<!-- Alpha Icons, copies to platforms/android/src/alpha/ -->
-	<alpha-icon src="res/android/alpha/ldpi.png" density="ldpi" />
-	<alpha-icon src="res/android/alpha/mdpi.png" density="mdpi" />
-	<alpha-icon src="res/android/alpha/hdpi.png" density="hdpi" />
-	<alpha-icon src="res/android/alpha/xhdpi.png" density="xhdpi" />
-	
-	<!-- Beta Icons, copies to platforms/android/src/beta/ -->
-	<beta-icon src="res/android/beta/ldpi.png" density="ldpi" />
-	<beta-icon src="res/android/beta/mdpi.png" density="mdpi" />
-	<beta-icon src="res/android/beta/hdpi.png" density="hdpi" />
-	<beta-icon src="res/android/beta/xhdpi.png" density="xhdpi" />
-	
-</platform>
+<icon-alpha-overlay src="path/to/alpha-overlay.png" />
+<icon-beta-overlay src="path/to/beta-overlay.png" />
 ```
+If no custom overlay is specified, the plugin will add the default overlay to the icons.
 
 ### Building
 If you perform the standard build or run command on the CLI, it will default to using the alpha variant. Alternatively, you can specify which variant you wish to use by passing through a gradle argument:

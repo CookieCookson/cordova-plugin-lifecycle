@@ -3,8 +3,26 @@
     var ConfigXmlHelper = require('./configXmlHelper.js');
 
     module.exports = {
-        getIcons: getIcons
+        getIcons: getIcons,
+        getIconOverlay: getIconOverlay
     };
+    
+    function getIconOverlay(cordovaContext, variant) {
+        var defaultIcon = cordovaContext.opts.plugin.dir + '/src/' + variant + '-overlay.png';
+        
+        var configXml = new ConfigXmlHelper(cordovaContext).read();
+        if (configXml === null) {
+            console.warn('config.xml not found! Please, check that it exist\'s in your project\'s root directory.');
+            return null;
+        }
+        
+        var iconOverlay = configXml.widget['icon-' + variant + '-overlay'];
+        if (iconOverlay !== undefined) {
+            return iconOverlay[0]['$'].src || defaultIcon;
+        } else {
+            return defaultIcon;
+        }
+    }
 
     function getIcons(cordovaContext) {
         var installedPlatforms = cordovaContext.opts.platforms;
@@ -15,35 +33,23 @@
         }
 
         var platformConfigPreferences = configXml.widget['platform'];
-        var icons = [];
+        var iconArray = [];
 
         installedPlatforms.forEach(function(installedPlatform) {
             platformConfigPreferences.forEach(function(configPlatform) {
                 if (installedPlatform === configPlatform['$'].name) {
-                    var platformIcons = {
-                        'alpha': [],
-                        'beta': []
-                    };
-        
-                    var alphaIcons = configPlatform['alpha-icon'];
-                    if (alphaIcons !== undefined) {
-                        alphaIcons.forEach(function(alphaIcon) {
-                            platformIcons.alpha.push(alphaIcon['$']);
+                    var icons = configPlatform['icon'];
+                    var platformIconsArray = [];
+                    if (icons !== undefined) {
+                        icons.forEach(function(icon) {
+                            platformIconsArray.push(icon['$']);
                         });
                     }
-        
-                    var betaIcons = configPlatform['beta-icon'];
-                    if (betaIcons !== undefined) {
-                        betaIcons.forEach(function(betaIcon) {
-                            platformIcons.beta.push(betaIcon['$']);
-                        });            
-                    }
-
-                    icons[installedPlatform] = platformIcons;
+                    iconArray[installedPlatform] = platformIconsArray;
                 }
             });      
         });
-        return icons;
+        return iconArray;
     }
 
 })();
