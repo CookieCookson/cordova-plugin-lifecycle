@@ -72,7 +72,6 @@ NOTE: When switching between alpha, beta and store builds on Android, you must f
 ## Future Development
 
 * iOS support
-* Provide template PSD or generator for creating the icon assets on the fly
 
 ## Notes
 
