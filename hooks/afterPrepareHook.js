@@ -17,7 +17,28 @@ function run(cordovaContext) {
     // Retrieve platform icons declared in config.xml
     var platformIcons = configParser.getIcons(cordovaContext);
     if (platformIcons === null) {
-        return;
+        if (platformIcons.android !== undefined) {
+            processAndroidIcons(platformIcons.android);
+        }
+        // TODO: Copy iOS icons
+    }
+    
+    var platforms = cordovaContext.opts.platforms;
+    for (var x=0; x<platforms.length; x++) {
+        var platform = platforms[x].trim().toLowerCase();
+        if (platform === "ios") {
+            updateProductBundleIdentifier(cordovaContext);
+        }
+    }
+}
+    
+function processAndroidIcons(androidIcons) {
+    if (androidIcons.alpha !== undefined) {
+        copyAndroidIcons(androidIcons.alpha, 'alpha');
+    }
+    
+    if (androidIcons.beta !== undefined) {
+        copyAndroidIcons(androidIcons.beta, 'beta');
     }
 
     // Loop through each platform and generate alpha/beta icons
@@ -67,6 +88,7 @@ function generateAndroidIcons(androidIcons, variant, iconOverlay) {
     });
 }
 
+// Updates the iOS Product Bundle Identifier to the correct variant
 function updateProductBundleIdentifier(cordovaContext) {
     var cliCommand = process.argv.join();
     var PRODUCT_BUNDLE_IDENTIFIER = configParser.getApplicationId(cordovaContext);
@@ -82,22 +104,24 @@ function updateProductBundleIdentifier(cordovaContext) {
         VARIANT_TYPE = '';
     }
     
-    // Append variant type to product bundle identifier if set
+    // Append variant type to product bundle identifier if set in XXX-Info.plist
     if (VARIANT_TYPE !== '') {
         PRODUCT_BUNDLE_IDENTIFIER = PRODUCT_BUNDLE_IDENTIFIER + '.' + VARIANT_TYPE;
         // Change CFBundleIdentifier to new product bundle identifier
         var projectRoot = cordovaContext.opts.projectRoot;
         var configFile = path.join(projectRoot, 'config.xml');
-        parseXML(fs.readFileSync(configFile, 'utf8'), function(err, result) {
-        if (err) { throw err; }
-        var config = result.widget;
-        var projectName = config.name[0].trim();
-        var plistFile = path.join(projectRoot, '/platforms/ios', projectName, projectName+'-Info.plist');
-        var plistObj = plist.parse(fs.readFileSync(plistFile, 'utf8'));
-        Object.assign(plistObj, {
-            CFBundleIdentifier: PRODUCT_BUNDLE_IDENTIFIER
-        });
-        fs.writeFileSync(plistFile, plist.build(plistObj));
+        parseXML(fs.readFileSync(configFile, 'utf8'), function(error, result) {
+            if (error) {
+                throw error;
+            }
+            var config = result.widget;
+            var projectName = config.name[0].trim();
+            var plistFile = path.join(projectRoot, '/platforms/ios', projectName, projectName+'-Info.plist');
+            var plistObj = plist.parse(fs.readFileSync(plistFile, 'utf8'));
+            Object.assign(plistObj, {
+                CFBundleIdentifier: PRODUCT_BUNDLE_IDENTIFIER
+            });
+            fs.writeFileSync(plistFile, plist.build(plistObj));
         });
     }
 }
