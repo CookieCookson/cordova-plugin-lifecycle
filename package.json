@@ -5,7 +5,8 @@
   "cordova": {
     "id": "cordova-lifecycle-plugin",
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   },
   "repository": {
