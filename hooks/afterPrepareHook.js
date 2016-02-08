@@ -68,12 +68,7 @@ function processAndroidIcons(androidIcons) {
     });
 }
 
-<<<<<<< HEAD
 function generateAndroidIcons(androidIcons, variant, iconOverlay) {
-    // Loop through each android icon declaration
-=======
-function copyAndroidIcons(androidIcons, state) {
->>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
     androidIcons.forEach(function(icon) {
         var iconSource = icon.src;
         var iconDestinationFolder = 'platforms/android/src/' + variant + '/res/drawable-' + icon.density + '/';
