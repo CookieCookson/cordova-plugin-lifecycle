@@ -4,7 +4,8 @@
 
     module.exports = {
         getIcons: getIcons,
-        getIconOverlay: getIconOverlay
+        getIconOverlay: getIconOverlay,
+        getApplicationId: getApplicationId
     };
     
     function getIconOverlay(cordovaContext, variant) {
@@ -50,6 +51,15 @@
             });      
         });
         return iconArray;
+    }
+    
+    function getApplicationId(cordovaContext) {
+        var configXml = new ConfigXmlHelper(cordovaContext).read();
+        if (configXml == null) {
+            console.warn('config.xml not found! Please, check that it exist\'s in your project\'s root directory.');
+            return null;
+        }
+        return configXml['widget']['$']['id'];
     }
 
 })();
