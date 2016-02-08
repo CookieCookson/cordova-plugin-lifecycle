@@ -93,15 +93,8 @@ It is recommended you use the alpha variant for debug installations over USB whe
 
 For more information on how to write your build configuration file(s), see the [iOS Shell Tool Guide](https://cordova.apache.org/docs/en/dev/guide/platforms/ios/tools.html#signing-the-app).
 
-## Future Development
-
-* iOS icon generation support
-
 ## Notes
 ### Android
 * Due to how Cordova CLI works, when using this in conjunction with the `cordova run` command, it will always try and launch the default app id (in this case com.test.app). For now you have to go back to your home screen and then select the correct app. I have been working on a fix and have submitted it to the cordova development team for review: https://issues.apache.org/jira/browse/CB-10140
 
 * This will not work nicely with the Google Play Beta and Alpha variants as you cannot have multiple IDs on an app. It is suggested when uploading any builds with Google Play you use the `store` variant.
-
-### iOS
-* There is currently no support for generating variant-specific icons.
