@@ -20,7 +20,7 @@ function getPackagesFromJson() {
       console.error('Can\'t read package.json file: ' + err);
       return;
     }
-
+    console.log('Installing npm dependencies for plugin...');
     var dependencies = data['dependencies'];
     if (dependencies) {
       for (var module in dependencies) {
