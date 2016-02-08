@@ -5,10 +5,14 @@
     module.exports = {
         getIcons: getIcons,
 <<<<<<< HEAD
+<<<<<<< HEAD
         getIconOverlay: getIconOverlay
 =======
         getApplicationId: getApplicationId
 >>>>>>> pass through variant app id to xcode plist
+=======
+        getApplicationId: getApplicationId
+>>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
     };
     
     function getIconOverlay(cordovaContext, variant) {
@@ -54,6 +58,15 @@
             });      
         });
         return iconArray;
+    }
+    
+    function getApplicationId(cordovaContext) {
+        var configXml = new ConfigXmlHelper(cordovaContext).read();
+        if (configXml == null) {
+            console.warn('config.xml not found! Please, check that it exist\'s in your project\'s root directory.');
+            return null;
+        }
+        return configXml['widget']['$']['id'];
     }
     
     function getApplicationId(cordovaContext) {

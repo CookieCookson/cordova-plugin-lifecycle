@@ -6,7 +6,10 @@ It will also modify the iOS plist CFBundleIdentifier.
 
 var configParser = require('./lib/configXmlParser.js');
 var fs = require('fs-extra');
+<<<<<<< HEAD
 var gm = require('gm');
+=======
+>>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
 var path = require('path');
 var plist    = require('plist');
 var parseXML = require('xml2js').parseString;
@@ -16,17 +19,24 @@ module.exports = function(ctx) {
 };
 
 function run(cordovaContext) {
+<<<<<<< HEAD
     // Retrieve overlay image from config.xml or provide fallback image with plugin
     var alphaOverlay = configParser.getIconOverlay(cordovaContext, 'alpha');
     var betaOverlay = configParser.getIconOverlay(cordovaContext, 'beta');
 
     // Retrieve platform icons declared in config.xml
+=======
+    // Copy variant icons from config.xml to platform directories
+>>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
     var platformIcons = configParser.getIcons(cordovaContext);
     if (platformIcons === null) {
         if (platformIcons.android !== undefined) {
             processAndroidIcons(platformIcons.android);
         }
+<<<<<<< HEAD
         // TODO: Copy iOS icons
+=======
+>>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
     }
     
     var platforms = cordovaContext.opts.platforms;
@@ -58,8 +68,12 @@ function processAndroidIcons(androidIcons) {
     });
 }
 
+<<<<<<< HEAD
 function generateAndroidIcons(androidIcons, variant, iconOverlay) {
     // Loop through each android icon declaration
+=======
+function copyAndroidIcons(androidIcons, state) {
+>>>>>>> 1f6a7f8f649b6f3cadff97738d0899f06c7020e6
     androidIcons.forEach(function(icon) {
         var iconSource = icon.src;
         var iconDestinationFolder = 'platforms/android/src/' + variant + '/res/drawable-' + icon.density + '/';
