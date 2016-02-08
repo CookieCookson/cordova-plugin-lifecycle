@@ -15,7 +15,7 @@ Build types:
 * Beta
 * Store
 
-This plugin automatically generates variant-specific icons so you can differentiate between the app variants on your device.
+This plugin automatically generates variant-specific icons so you can differentiate between the app variants on your device. You must have configured your icons using config.xml as per the Cordova spec, see [Configuring Icons in the CLI](https://cordova.apache.org/docs/en/latest/config_ref/images.html).
 
 ## Installation
 
