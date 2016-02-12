@@ -1,9 +1,9 @@
 {
-  "name": "cordova-lifecycle-plugin",
-  "version": "0.2.2",
+  "name": "cordova-plugin-lifecycle",
+  "version": "0.2.3",
   "description": "This plugin allows you to create an app lifecycle with alpha, beta and production states.",
   "cordova": {
-    "id": "cordova-lifecycle-plugin",
+    "id": "cordova-plugin-lifecycle",
     "platforms": [
       "android",
       "ios"
