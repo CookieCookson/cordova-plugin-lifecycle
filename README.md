@@ -57,14 +57,13 @@ cordova run android -- --gradleArg="-PactiveFlavor=alpha"
 ```
 This will install an app on your phone with the identifier of `com.test.app.alpha`.
 
-You can then swap out this `activeFlavor` variable to choose which variant of build you would like. If performing the store or beta variant, it is recommended you also pass through the `--release` flag.
+You can then swap out this `activeFlavor` variable to choose which variant of build you would like.
 ```bash
 cordova run android -- --gradleArg="-PactiveFlavor=beta" --release
 ```
 ```bash
 cordova run android -- --gradleArg="-PactiveFlavor=store" --release
 ```
-It is recommended you use the alpha variant for debug installations over USB where you may need to remotely inspect or debug your app. The beta variant is intended for when distributing your app over-the-air through services such as HockeyApp. Because of this it is recommended to pass through the release flag so the app is signed and runs with the release configuration.
 
 NOTE: When switching between alpha, beta and store builds on Android, you must first run the `clean` command else you may get odd results. You can do this by performing:
 ```bash
@@ -82,14 +81,13 @@ cordova run ios --alpha --buildConfig="build.alpha.json"
 ```
 This will install an app on your phone with the identifier of `com.test.app.alpha`.
 
-You can then swap out `--alpha` to choose which variant of build you would like. If performing the store or beta variant, it is recommended you also pass through the `--release` flag.
+You can then swap out `--alpha` to choose which variant of build you would like.
 ```bash
 cordova run android --beta --buildConfig="build.beta.json" --release
 ```
 ```bash
 cordova run android --store --buildConfig="build.store.json" --release
 ```
-It is recommended you use the alpha variant for debug installations over USB where you may need to remotely inspect or debug your app. The beta variant is intended for when distributing your app over-the-air through services such as HockeyApp. Because of this it is recommended to pass through the release flag so the app is signed and runs with the release configuration.
 
 For more information on how to write your build configuration file(s), see the [iOS Shell Tool Guide](https://cordova.apache.org/docs/en/dev/guide/platforms/ios/tools.html#signing-the-app).
 
