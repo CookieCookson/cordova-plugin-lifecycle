@@ -29,7 +29,6 @@ function run(cordovaContext) {
     // Loop through each platform and generate alpha/beta icons
     var installedPlatforms = cordovaContext.opts.platforms;
     installedPlatforms.forEach(function(installedPlatform) {
-        console.log(installedPlatform);
         // If the android platform is installed and there are icons declared in config.xml
         if (installedPlatform === 'android' && platformIcons.android) {
             generateAndroidIcons(platformIcons.android, 'alpha', alphaOverlay);
