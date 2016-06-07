@@ -83,10 +83,10 @@ This will install an app on your phone with the identifier of `com.test.app.alph
 
 You can then swap out `--alpha` to choose which variant of build you would like.
 ```bash
-cordova run android --beta --buildConfig="build.beta.json" --release
+cordova run ios --beta --buildConfig="build.beta.json" --release
 ```
 ```bash
-cordova run android --store --buildConfig="build.store.json" --release
+cordova run ios --store --buildConfig="build.store.json" --release
 ```
 
 For more information on how to write your build configuration file(s), see the [iOS Shell Tool Guide](https://cordova.apache.org/docs/en/dev/guide/platforms/ios/tools.html#signing-the-app).
