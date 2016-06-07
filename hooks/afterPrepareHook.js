@@ -25,23 +25,28 @@ function run(cordovaContext) {
     if (platformIcons === null) {
         return;
     }
-    
+
+    // Get CLI commands sent through
+    var cliCommand = process.argv.join();
+
     // Loop through each platform and generate alpha/beta icons
     var installedPlatforms = cordovaContext.opts.platforms;
     installedPlatforms.forEach(function(installedPlatform) {
         // If the android platform is installed and there are icons declared in config.xml
         if (installedPlatform === 'android' && platformIcons.android) {
-            generateAndroidIcons(platformIcons.android, 'alpha', alphaOverlay);
-            generateAndroidIcons(platformIcons.android, 'beta', betaOverlay);
+            if (cliCommand.indexOf('store') === -1 && cliCommand.indexOf('beta') === -1) {
+                generateAndroidIcons(platformIcons.android, 'alpha', alphaOverlay);
+            } else if (cliCommand.indexOf('beta') > -1) {
+                generateAndroidIcons(platformIcons.android, 'beta', betaOverlay);
+            }
         }
         if (installedPlatform === 'ios') {
             // Set the product bundle identifier to the correct variant
             updateProductBundleIdentifier(cordovaContext);
             if (platformIcons.ios) {
-                var cliCommand = process.argv.join();
                 // Get variant type from command line
                 // If the user has not specified the store or beta (fallback to alpha as primary)
-                if (cliCommand.indexOf('--store') === -1 && cliCommand.indexOf('--beta' === -1)) {
+                if (cliCommand.indexOf('--store') === -1 && cliCommand.indexOf('--beta') === -1) {
                     // Overwrite the icons for alpha
                     generateiOSIcons(cordovaContext, platformIcons.ios, 'alpha', alphaOverlay);
                 } else if (cliCommand.indexOf('--beta') > -1) {
