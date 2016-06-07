@@ -29,6 +29,7 @@ function run(cordovaContext) {
     // Loop through each platform and generate alpha/beta icons
     var installedPlatforms = cordovaContext.opts.platforms;
     installedPlatforms.forEach(function(installedPlatform) {
+        console.log(installedPlatform);
         // If the android platform is installed and there are icons declared in config.xml
         if (installedPlatform === 'android' && platformIcons.android) {
             generateAndroidIcons(platformIcons.android, 'alpha', alphaOverlay);
@@ -40,7 +41,8 @@ function run(cordovaContext) {
             if (platformIcons.ios) {
                 var cliCommand = process.argv.join();
                 // Get variant type from command line
-                if (cliCommand.indexOf('--alpha') > -1) {
+                // If the user has not specified the store or beta (fallback to alpha as primary)
+                if (cliCommand.indexOf('--store') === -1 && cliCommand.indexOf('--beta' === -1)) {
                     // Overwrite the icons for alpha
                     generateiOSIcons(cordovaContext, platformIcons.ios, 'alpha', alphaOverlay);
                 } else if (cliCommand.indexOf('--beta') > -1) {
@@ -97,7 +99,7 @@ function generateiOSIcons(cordovaContext, iosIcons, variant, iconOverlay) {
         }
         var config = result.widget;
         var projectName = config.name[0].trim();
-        var iconDestinationFolder = path.join(projectRoot, '/platforms/ios', projectName, '/Resources/icons/');
+        var iconDestinationFolder = path.join(projectRoot, '/platforms/ios', projectName, '/Images.xcassets/AppIcon.appiconset/');
         iosIcons.forEach(function(icon) {
             var iconSource = icon.src;
             gm(iconSource)
@@ -111,13 +113,15 @@ function generateiOSIcons(cordovaContext, iosIcons, variant, iconOverlay) {
                     .draw(['image over 0,0 ' + iconWidth + ','+iconHeight + ' "' + iconOverlay + '"'])
                     .write(iconDestinationFolder + iconFilename, function(error){
                         if (error) {
-                            console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error); 
+                            console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error);
+                            throw error;
                         } else { 
                             console.log('Generated ' + variant + ' icon: ' + iconDestinationFolder + iconFilename);
                         }
                     });
                 } else {
                     console.log('Error getting size of source icons: ' + size_error);
+                    throw error;
                 }
             });
         });
