@@ -6,7 +6,7 @@ It will also modify the iOS plist CFBundleIdentifier.
 
 var configParser = require('./lib/configXmlParser.js');
 var fs = require('fs-extra');
-var gm = require('gm');
+var lwip = require('lwip');
 var path = require('path');
 var plist    = require('plist');
 var parseXML = require('xml2js').parseString;
@@ -68,27 +68,45 @@ function generateAndroidIcons(androidIcons, variant, iconOverlay) {
         fs.ensureDir(iconDestinationFolder, function(dir_error) {
             if (!dir_error) {
                 // Get size of source icon
-                gm(iconSource)
-                .size(function(size_error, size) {
-                    if (!size_error) {
-                        var iconWidth = size.width;
-                        var iconHeight = size.height;
-                        // add icon overlay to source icon and write it to the variant destination
-                        gm(iconSource)
-                        .draw(['image over 0,0 ' + iconWidth + ','+iconHeight + ' "' + iconOverlay + '"'])
-                        .write(iconDestinationFolder + 'icon.png', function(error){
-                            if (error) {
-                                console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error); 
-                            } else { 
-                                console.log('Generated ' + variant + ' icon: ' + iconDestinationFolder + 'icon.png');
-                            }
-                        });
-                    } else {
+                lwip.open(iconSource, function(size_error, image) {
+                    if (size_error) {
                         console.log('Error getting size of source icons: ' + size_error);
+                        throw size_error;
                     }
+                    var iconWidth = image.width();
+                    var iconHeight = image.height();
+                    // Get overlay and resize it to dimensions of source icon
+                    var overlay = lwip.open(iconOverlay, function(err_get_overlay, overlayImage) {
+                        if (err_get_overlay) {
+                            console.log('Error getting overlay image: ' + err_get_overlay);
+                            throw err_get_overlay;
+                        }
+                        overlayImage.resize(iconWidth, iconHeight, 'lanczos', function(err_resize_overlay, resizedOverlayImage) {
+                            if (err_resize_overlay) {
+                                console.log('Error resizing overlay image: ' + err_resize_overlay);
+                                throw err_get_overlay;
+                            }
+                            // Add on the overlay image to the icon
+                            image.paste(0, 0, resizedOverlayImage, function(err_paste_overlay, combinedImage) {
+                                if (err_paste_overlay) {
+                                    console.log('Error pasting overlay image: ' + err_paste_overlay);
+                                    throw err_get_overlay;
+                                }
+                                combinedImage.writeFile(iconDestinationFolder + 'icon.png', function(writeError) {
+                                    if (writeError) {
+                                        console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error); 
+                                        throw writeError;
+                                    } else {
+                                        console.log('Generated ' + variant + ' icon: ' + iconDestinationFolder + 'icon.png');
+                                    }
+                                });
+                            });
+                        });
+                    });
                 });
             } else {
                 console.log('Error creating destination directory: ' + dir_error);
+                throw dir_error;
             }
         });
     });
@@ -106,27 +124,48 @@ function generateiOSIcons(cordovaContext, iosIcons, variant, iconOverlay) {
         var iconDestinationFolder = path.join(projectRoot, '/platforms/ios', projectName, '/Images.xcassets/AppIcon.appiconset/');
         iosIcons.forEach(function(icon) {
             var iconSource = icon.src;
-            gm(iconSource)
-            .size(function(size_error, size) {
-                if (!size_error) {
-                    var iconWidth = size.width;
-                    var iconHeight = size.height;
-                    var iconFilename = icon.src.split("/").pop();
-                    // add icon overlay to source icon and write it to the variant destination
-                    gm(iconSource)
-                    .draw(['image over 0,0 ' + iconWidth + ','+iconHeight + ' "' + iconOverlay + '"'])
-                    .write(iconDestinationFolder + iconFilename, function(error){
-                        if (error) {
-                            console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error);
-                            throw error;
-                        } else { 
-                            console.log('Generated ' + variant + ' icon: ' + iconDestinationFolder + iconFilename);
-                        }
-                    });
-                } else {
+            
+            // Get size of source icon
+            lwip.open(iconSource, function(size_error, image) {
+                if (size_error) {
                     console.log('Error getting size of source icons: ' + size_error);
-                    throw error;
+                    throw size_error;
                 }
+                var iconWidth = image.width();
+                var iconHeight = image.height();
+                var iconFilename = icon.src.split("/").pop();
+
+
+
+
+                // Get overlay and resize it to dimensions of source icon
+                var overlay = lwip.open(iconOverlay, function(err_get_overlay, overlayImage) {
+                    if (err_get_overlay) {
+                        console.log('Error getting overlay image: ' + err_get_overlay);
+                        throw err_get_overlay;
+                    }
+                    overlayImage.resize(iconWidth, iconHeight, 'lanczos', function(err_resize_overlay, resizedOverlayImage) {
+                        if (err_resize_overlay) {
+                            console.log('Error resizing overlay image: ' + err_resize_overlay);
+                            throw err_get_overlay;
+                        }
+                        // Add on the overlay image to the icon
+                        image.paste(0, 0, resizedOverlayImage, function(err_paste_overlay, combinedImage) {
+                            if (err_paste_overlay) {
+                                console.log('Error pasting overlay image: ' + err_paste_overlay);
+                                throw err_get_overlay;
+                            }
+                            combinedImage.writeFile(iconDestinationFolder + iconFilename, function(writeError) {
+                                if (writeError) {
+                                    console.log('Error overlaying ' + variant + ' icon ' + iconSource + ': ' + error);
+                                    throw writeError;
+                                } else {
+                                    console.log('Generated ' + variant + ' icon: ' + iconDestinationFolder + iconFilename);
+                                }
+                            });
+                        });
+                    });
+                });
             });
         });
     });

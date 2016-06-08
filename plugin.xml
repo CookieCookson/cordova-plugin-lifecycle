@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-lifecycle" version="0.2.4">
+        id="cordova-plugin-lifecycle" version="0.2.5">
 
     <name>Lifecycle</name>
     
